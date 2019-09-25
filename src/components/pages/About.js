@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 const About = () => {
     return (
-        <div>
+        <Fragment>
             <h1>About this App</h1>
             <p>App to search Github Users</p>
             <p>Version of 1.0.0</p>
-        </div>
+        </Fragment>
     )
 }
 

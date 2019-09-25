@@ -4,6 +4,7 @@ import './App.css';
 import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
 import axios from 'axios';
+import About from './components/pages/About';
 import Search from './components/users/Search';
 import Alert from './components/layout/Alert';
 
@@ -50,12 +51,18 @@ class App extends Component {
             <Alert alert={this.state.alert} />
             <Switch>
               
+              {/* Home Route */}
               <Route exact path="/" render={props => (
                 <Fragment>
                   <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0 ? true : false} setAlert={this.setAlert} />
                   <Users loading={loading} users={users} />
                 </Fragment>
               )} />
+
+              {/* About Route */}
+              <Route
+                exact path="/about" component={About}
+              />
 
             </Switch>
           </div>
