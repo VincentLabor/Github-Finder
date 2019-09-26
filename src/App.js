@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
+import User from './components/users/User';
 import axios from 'axios';
 import About from './components/pages/About';
 import Search from './components/users/Search';
@@ -12,6 +13,7 @@ import Alert from './components/layout/Alert';
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null
   }
@@ -30,6 +32,14 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false }); //This is more specific and will leave out things like pagination
   }
 
+
+  getUser = async (username) => {
+    this.setState({ loading: true })
+    //console.log(text); Now we will make a get query since we know that the text and search work pretty well.
+    const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+    this.setState({ user: res.data, loading: false }); //This is more specific and will leave out things like pagination
+  }
+
   clearUsers = () => {
     this.setState({ users: [], loading: false })
   }
@@ -41,16 +51,16 @@ class App extends Component {
 
   render() {
 
-    const { users, loading } = this.state;
+    const { users, user, loading, alert } = this.state;
 
     return (
       <Router>
         <div className="App">
           <Navbar title="Github Finder" icon="fab fa-github" />
           <div className="container">
-            <Alert alert={this.state.alert} />
+            <Alert alert={alert} />
             <Switch>
-              
+
               {/* Home Route */}
               <Route exact path="/" render={props => (
                 <Fragment>
@@ -62,6 +72,14 @@ class App extends Component {
               {/* About Route */}
               <Route
                 exact path="/about" component={About}
+              />
+
+              <Route /* This will require fragment and etc because this is importing a component with state and other things aside form static made */
+                exact path='/user/:login'
+                render={props => (
+                  <User {...props} getUser={this.getUser} user={user} loading={loading} />
+                )}
+
               />
 
             </Switch>
