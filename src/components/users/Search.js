@@ -1,53 +1,50 @@
-import React, { Component } from "react";
-import PropTypes from 'prop-types'
+import React, {useState, useContext} from "react";
+import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext';
 
 
-class Search extends Component {
-    state = {
-        text: ''
-    }
+const Search = ({ setAlert, showClear, clearUsers }) => { //These are props that come from appjs
 
+const githubContext = useContext(GithubContext);
 
-    static propTypes = {
-        searchUsers: PropTypes.func.isRequired,
-        clearUsers: PropTypes.func.isRequired,
-        showClear: PropTypes.bool.isRequired,
-        setAlert: PropTypes.func.isRequired
-    }
+const [text, setText] = useState("");
 
-    onChange = (e) => this.setState({ [e.target.name]: e.target.value })
+    const onChange = (e) => setText(e.target.value)
 
-    onSubmit = (e) => { //We are attempting to send a prop back upwards towards app
+    const onSubmit = (e) => { //We are attempting to send a prop back upwards towards app
         e.preventDefault(); //This prevents a link from being submitted.
-        if (this.state.text === '') {
-            this.props.setAlert('Please enter something', 'light')
+        if (text === '') {
+            setAlert('Please enter something', 'light')
         } else {
-            this.props.searchUsers(this.state.text); //we can call this where we embedded search on App.js
-            this.setState({ text: '' })
+            githubContext.searchUsers(text); //we can call this where we embedded search on App.js
+            setText("")
         }
 
     }
 
-    render() {
-        const { showClear, clearUsers } = this.props;
-        const { text } = this.state
-        return (
-            <div>
-                <form onSubmit={this.onSubmit} className="form">
-                    <input
-                        type="text"
-                        name="text"
-                        placeholder="Search Users"
-                        value={text}
-                        onChange={this.onChange} /* This is required if I want the entered text in the search bar to be part of the state.  */
-                    />
-                    <input type="submit" value="Search" className="btn-dark btn-block" />
-                </form>
-                {showClear && <div className="btn btn-light btn-block" onClick={clearUsers}>Clear</div>}
+    return (
+        <div>
+            <form onSubmit={onSubmit} className="form">
+                <input
+                    type="text"
+                    name="text"
+                    placeholder="Search Users"
+                    value={text}
+                    onChange={onChange} /* This is required if I want the entered text in the search bar to be part of the state.  */
+                />
+                <input type="submit" value="Search" className="btn-dark btn-block" />
+            </form>
+            {showClear && <div className="btn btn-light btn-block" onClick={clearUsers}>Clear</div>}
 
-            </div>
-        )
-    }
+        </div>
+    )
+}
+
+
+Search.propTypes = {
+    clearUsers: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired
 }
 
 export default Search
