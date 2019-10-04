@@ -13,7 +13,6 @@ import Alert from './components/layout/Alert';
 
 
 const App = () => {
-  const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,10 +44,7 @@ const App = () => {
 
 
 
-  const clearUsers = () => {
-    setUsers([]);
-    setLoading(false);
-  }
+
 
   const showAlert = (msg, type) => {
     setAlert({ alert: { msg, type } });
@@ -67,7 +63,7 @@ const App = () => {
               {/* Home Route */}
               <Route exact path="/" render={props => (
                 <Fragment>
-                  <Search clearUsers={clearUsers} showClear={users.length > 0 ? true : false} setAlert={showAlert} />
+                  <Search setAlert={showAlert} />
                   <Users />
                 </Fragment>
               )} />

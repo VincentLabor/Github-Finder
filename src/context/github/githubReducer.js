@@ -14,6 +14,12 @@ export default (state, action) => { //Reducers take 2 things, state and action.
                 users: action.payload,
                 loading: false
             }
+       case CLEAR_USERS:
+           return {
+            ...state,
+            users: [],
+            loading: false
+           }     
        case SET_LOADING:
            return { //We use ellipses because we cant just reassign the state. 
                ...state,

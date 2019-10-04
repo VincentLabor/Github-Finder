@@ -34,19 +34,23 @@ const GithubState = props => { //This is our global state for the application.
     //Get User
     //Get Repos
     //Clear users
+    const clearUsers = () => dispatch({type: CLEAR_USERS}); 
+      
     //Set Loading
 
     const setLoading = () => {
         dispatch({ type: SET_LOADING })
     }
 
+    //Below is the functions provided from above.
     return <GithubContext.Provider
         value={{
             user: state.user,
             users: state.users,
             repos: state.repos,
             loading: state.loading,
-            searchUsers
+            searchUsers,
+            clearUsers
         }}>
         {props.children}
 
