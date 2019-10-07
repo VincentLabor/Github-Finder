@@ -21,6 +21,19 @@ const GithubState = props => { //This is our global state for the application.
     const [state, dispatch] = useReducer(GithubReducer, initialState)
 
     //Search user
+    const getUser = async username => {
+        setLoading();
+        //console.log(text); Now we will make a get query since we know that the text and search work pretty well.
+        const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+
+        dispatch({
+            type: GET_USER,
+            payload: res.data
+        })
+    }
+
+
+
     //Search Github users
     const searchUsers = async text => {
         setLoading();
@@ -32,10 +45,24 @@ const GithubState = props => { //This is our global state for the application.
         })
     }
     //Get User
+
     //Get Repos
+    const getUserRepos = async (username) => {
+        setLoading();
+        //console.log(text); Now we will make a get query since we know that the text and search work pretty well.
+        const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+
+        dispatch({
+            type: GET_REPOS,
+            payload: res.data
+        })
+      }
+
+
+
     //Clear users
-    const clearUsers = () => dispatch({type: CLEAR_USERS}); 
-      
+    const clearUsers = () => dispatch({ type: CLEAR_USERS });
+
     //Set Loading
 
     const setLoading = () => {
@@ -45,12 +72,14 @@ const GithubState = props => { //This is our global state for the application.
     //Below is the functions provided from above.
     return <GithubContext.Provider
         value={{
-            user: state.user,
-            users: state.users,
-            repos: state.repos,
-            loading: state.loading,
-            searchUsers,
-            clearUsers
+            user: state.user, //state
+            users: state.users, //state
+            repos: state.repos, //state
+            loading: state.loading, //state
+            searchUsers, //function
+            clearUsers, //function
+            getUser, //function
+            getUserRepos //function
         }}>
         {props.children}
 

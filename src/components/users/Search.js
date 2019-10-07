@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
-import PropTypes from 'prop-types';
+import AlertContext from '../../context/alert/alertContext';
 import GithubContext from '../../context/github/githubContext';
 
 
-const Search = ({ setAlert }) => { //These are props that come from appjs
-
+const Search = () => { //These are props that come from appjs
+    const alertContext = useContext(AlertContext);
     const githubContext = useContext(GithubContext);
 
     const [text, setText] = useState("");
@@ -14,7 +14,7 @@ const Search = ({ setAlert }) => { //These are props that come from appjs
     const onSubmit = (e) => { //We are attempting to send a prop back upwards towards app
         e.preventDefault(); //This prevents a link from being submitted.
         if (text === '') {
-            setAlert('Please enter something', 'light')
+            alertContext.setAlert('Please enter something', 'light')
         } else {
             githubContext.searchUsers(text); //we can call this where we embedded search on App.js
             setText("")
@@ -37,11 +37,6 @@ const Search = ({ setAlert }) => { //These are props that come from appjs
             {githubContext.users.length > 0 && <button className='btn btn-light btn-block' onClick={githubContext.clearUsers}>Clear</button>}
         </div>
     )
-}
-
-
-Search.propTypes = {
-    setAlert: PropTypes.func.isRequired
 }
 
 export default Search
