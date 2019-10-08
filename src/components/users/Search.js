@@ -24,7 +24,7 @@ const Search = () => { //These are props that come from appjs
 
     return (
         <div>
-            <form onSubmit={onSubmit} className="form">
+            <form onSubmit={onSubmit}>
                 <input
                     type="text"
                     name="text"
